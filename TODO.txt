@@ -1,0 +1,117 @@
+// Live reload
+// Show user input in console
+console.log("name: " + this.state.userName);
+
+// Attach chrome debuger
+
+// Validate name field
+disabled={this.state.userName.length === 0 ? true : false}
+
+// Add scroll view
+<ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
+
+
+// Bring back avatar
+_onAvatarPick: function(avatar) {
+  this.setState({avatar: avatar});
+},
+
+_renderAvatarPick: function() {
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
+      <Text style={styles.textLabel}>Pick your avatar</Text>
+
+      {_.map(this.state.avatarsList, (avatar) => {
+        return (
+          <TouchableHighlight style={avatar === this.state.avatar ? styles.selected : {}}
+            underlayColor='#99d9f4'
+            onPress={() => this._onAvatarPick(avatar) }>
+            <Image
+              style={styles.image}
+              source={{uri: avatar}} />
+          </TouchableHighlight>
+        );
+      })}
+
+      <NiceButton 
+        disabled={this.state.avatar.length === 0 ? true : false}
+        withStyle={{marginLeft: 50, marginRight: 50}}
+        name="Continue" onPress={this._onContinue} />
+    </ScrollView>
+  );
+},
+
+avatar: '',
+      avatarsList: [
+        'http://icons.iconarchive.com/icons/iconka/buddy/128/officer-man-icon.png',
+        'http://icons.iconarchive.com/icons/iconka/buddy/128/angel-icon.png',
+        'http://icons.iconarchive.com/icons/iconka/buddy/128/alien-female-icon.png',
+        'http://icons.iconarchive.com/icons/aha-soft/free-large-boss/512/Admin-icon.png',
+        'http://icons.iconarchive.com/icons/iconka/buddy/128/airhostess-woman-icon.png',
+        'http://icons.iconarchive.com/icons/iconka/buddy/128/nurse-girl-icon.png',
+      ],
+    }
+  },
+
+// Finish form
+_onContinue: function() {
+  if (this.state.formNumber === 1) {
+    this.props.onFormCompleted({
+      name: this.state.userName,
+      avatar: this.state.avatar,
+    });
+  } else {
+    this.setState({formNumber: this.state.formNumber + 1});
+  }
+},
+
+// Render both forms
+if (this.state.formNumber === 0) {
+  return this._renderNamePick();
+} else {
+  return this._renderAvatarPick();
+}
+
+// Form functionality
+_onFormCompleted: function(userData) {
+  this.firebaseRef = new Firebase("https://softbinator-chat.firebaseio.com/users");
+  var newUserRef = this.firebaseRef.push(userData);
+
+  this.setState({
+    formCompleted: true,
+    user: {
+      name: userData.name,
+      avatar: userData.avatar,
+      objectId: newUserRef.key(),
+    }
+  });
+},
+
+// Bring back chat
+_renderChat: function() {
+  return (
+    <NavigatorIOS 
+      style={styles.container}
+      initialRoute={{
+        component: ChatScreen,
+        title: "Softbinator group chat",
+        passProps: { user: this.state.user},
+      }} />
+  );
+},
+
+if (this.state.formCompleted) {
+  return this._renderChat();
+} else {
+  return this._renderRegisterForm();
+}
+
+// Open profile from chat
+this.props.navigator.push({
+  title: "Profile",
+  component: Profile,
+  passProps: {
+    user: message.user,
+  }
+});
+

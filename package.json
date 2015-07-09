@@ -1,0 +1,15 @@
+{
+  "name": "SoftbinatorChat",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh"
+  },
+  "dependencies": {
+    "firebase": "^2.2.7",
+    "react-native": "^0.6.0",
+    "react-native-keyboardevents": "^0.4.4",
+    "react-timer-mixin": "^0.13.2",
+    "underscore": "^1.8.3"
+  }
+}
